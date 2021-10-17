@@ -1,29 +1,26 @@
-% Metódy inžinierskej práce
-
 \documentclass[10pt,twoside,slovak,a4paper]{article}
 
 \usepackage[slovak]{babel}
 %\usepackage[T1]{fontenc}
-\usepackage[IL2]{fontenc} % lepšia sadzba písmena Ľ než v T1
+\usepackage[IL2]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
-\usepackage{url} % príkaz \url na formátovanie URL
-\usepackage{hyperref} % odkazy v texte budú aktívne (pri niektorých triedach dokumentov spôsobuje posun textu)
+\usepackage{url}
+\usepackage{hyperref}
 
 \usepackage{cite}
-%\usepackage{times}
 
 \pagestyle{headings}
 
-\title{Semestrálna práca MIP\thanks{Semestrálny projekt v predmete Metódy inžinierskej práce, ak. rok 2015/16, vedenie: Meno Priezvisko}} % meno a priezvisko vyučujúceho na cvičeniach
+\title{Simulovanie výsledkov futbalových zápasov na základe historických dát}
 
-\author{Meno Priezvisko\\[2pt]
+\author{Adam Gábor\\[2pt]
 	{\small Slovenská technická univerzita v Bratislave}\\
 	{\small Fakulta informatiky a informačných technológií}\\
-	{\small \texttt{...@stuba.sk}}
+	{\small Vedúci: Ing. Fedor Lehocki}\\
 	}
 
-\date{\small 30. september 2015} % upravte
+\date{\small 17. október 2021}
 
 
 
@@ -32,45 +29,30 @@
 \maketitle
 
 \begin{abstract}
-\ldots
+Odvetvie športu sa vyvíja ako každé iné a s návalom obrovského množstva informácií je čoraz populárnejšie využívanie historických dát k tvorbe pokročilých metrík a štatistík súvisiacich s hrou.
+
+Ako svoju tému som si vybral štúdium algoritmov, ktoré dokážu predpovedať výsledky futbalových zápasov. V mojej práci sa v stručnosti zameriam na matematiku skrytú za futbalom, za stávkovaním a na jednoduché softvéry (modely), ktoré dokážu na základe historických dát a dostupných informácií simulovať futbalové zápasy a takýmto spôsobom predpovedať ich výsledok ešte predtým, ako sa v skutočnosti budú hrať. Softvér vie na základe získaných výsledkov určiť výhodnosť či nevýhodnosť kurzov ponúkaných stávkovými kanceláriami.
+
 \end{abstract}
 
 
 
-\section{Úvod}
+\section{Úvod do problematiky}
 
 Motivujte čitateľa a vysvetlite, o čom píšete. Úvod sa väčšinou nedelí na časti.
 
 Uveďte explicitne štruktúru článku. Tu je nejaký príklad.
-Základný problém, ktorý bol naznačený v úvode, je podrobnejšie vysvetlený v časti~\ref{nejaka}.
-Dôležité súvislosti sú uvedené v častiach~\ref{dolezita} a~\ref{dolezitejsia}.
-Záverečné poznámky prináša časť~\ref{zaver}.
+Základný problém, ktorý bol naznačený v úvode, je podrobnejšie vysvetlený
 
-\includegraphics[scale = 1.5]{diagram.pdf}
+\section{Nejaká časť}
 
-\begin{tabular}{rc}
-Prvý riadok     &  Hodnota riadka \\
-Druhý riadok    & Hodnota riadka
-\end{tabular}
+\section{Typy a zdroje použitých vstupných dát}
 
+\section{Programovanie algoritmu}
 
-\begin{displaymath}
-ax^2 + bx + c = 0
-\end{displaymath}
+\section{Presnosť algoritmu}
 
-\section{Nejaká časť} \label{nejaka}
-
-Z obr.~\ref{f:rozhod} je všetko jasné. 
-
-\begin{figure*}[tbh]
-\centering
-%\includegraphics[scale=1.0]{diagram.pdf}
-Aj text môže byť prezentovaný ako obrázok. Stane sa z neho označný plávajúci objekt. Po vytvorení diagramu zrušte znak \texttt{\%} pred príkazom \verb|\includegraphics| označte tento riadok ako komentár (tiež pomocou znaku \texttt{\%}).
-\caption{Rozhodujúci argument.}
-\label{f:rozhod}
-\end{figure*}
-
-\section{Iná časť} \label{ina}
+\section{Využitie v praxi - stávkovanie}
 
 Základným problémom je teda\ldots{} Najprv sa pozrieme na nejaké vysvetlenie (časť~\ref{ina:nejake}), a potom na ešte nejaké (časť~\ref{ina:nejake}).\footnote{Niekedy môžete potrebovať aj poznámku pod čiarou.}
 

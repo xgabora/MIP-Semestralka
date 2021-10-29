@@ -12,7 +12,7 @@
 
 \pagestyle{headings}
 
-\title{Simulovanie výsledkov futbalových zápasov na základe historických dát}
+\title{Simulovanie výsledkov futbalových zápasov na základe (historických) dát}
 
 \author{Adam Gábor\\[2pt]
 	{\small Slovenská technická univerzita v Bratislave}\\
@@ -20,9 +20,7 @@
 	{\small Vedúci: Ing. Fedor Lehocki}\\
 	}
 
-\date{\small 17. október 2021}
-
-
+\date{\small 29. október 2021}
 
 \begin{document}
 
@@ -39,67 +37,39 @@ Ako tému som si vybral štúdium algoritmov, ktoré dokážu predpovedať výsl
 
 Futbal je multimiliardový biznis. Najviac v ňom zarába ten, kto vyhráva, a preto sa tímy snažia nájsť čo najviac možností, ktoré by im zvíťaziť pomohli. A to aj mimo ihriska.
 
-Každý futbalový tím má niekoľko dátových analytikov, ktorých jedinou úlohou je sledovať vývoj na ihrisku v číslach. Hráčom sa počítajú dotyky s loptou, nabehané kilometre, zaznamenáva sa každá strela a prihrávka. Futbalové algoritmy sú dnes schopné využiť tieto štatistiky a pomocou nich predpovedať, ako zápas dopadne. Dokážu vypočítať šancu, s akou tím skóruje, a dokážu vypočítať priemerný počet gólov, ktoré vsieti.
+Každý futbalový tím má niekoľko dátových analytikov, ktorých jedinou úlohou je sledovať vývoj na ihrisku v číslach. Hráčom sa počítajú dotyky s loptou, nabehané kilometre, zaznamenáva sa každá strela a prihrávka. Futbalové algoritmy sú dnes schopné využiť tieto štatistiky a pomocou nich vytvoriť model simulujúci aj zápasy, ktoré sa v skutočnosti nehrali. Keďže dokážu vypočítať šancu, s akou tím skóruje, a dokážu vypočítať aj priemerný počet gólov, ktoré vsieti, môžu byť takéto modely využité na predpovedanie skutočných zápasov.
 
 Modernou, relevantnou a často používanou metrikou je v súčasnosti ukazovateľ xG - expected goals, ktorý vyjadruje počet gólov, ktoré mal tím na základe polohy ich striel dosiahnuť. Čím bližšie je miesto vystrelenia k bráne, tým vyššia je hodnota strely v xG. Jednotlivé hodnoty sú nastavené na základe dát z miliónov už odohraných zápasov. Takýmto spôsobom napríklad vieme, že penalta má hodnotu 0.78 xG, pretože sa 78 percent penált končí gólom.
 
 \section{Typy a zdroje použitých vstupných dát}
 
-\section{Test algoritmu na reálnych zápasoch}
+Keďže je futbal stále hrou, ktorú do veľkej miery ovplyvňuje ľudský faktor, je takmer nemožné s presnosťou určiť, od čoho všetkého výsledok zápasu závisí. Preto využívajú rôzne algoritmy rôznu metodológiu a rôzne vstupné dáta.
+
+Všetky dáta by sme mohli rozdeliť do dvoch mnou vytýčených skupín - objektívne a subjektívne. Objektívne dáta sú jednoznačné čísla - napríklad počet výhier tímu alebo počet skórovaných gólov. Subjektívne dáta sa snažia brať do úvahy individuálne kvality hráčov a takisto aj spomínaný ľudský faktor a sú úzko prepojené s vedomosťami toho, kto algoritmus obsluhuje. Keď sa napríklad tímu zraní kľúčový hráč alebo musí na zápas cestovať dlhú dobu nepohodlným autobusom, pochopiteľne to ovplyvní jeho výkon.
+
+\subsection{Forma tímu}
+
+Pravdepodobne najzákladnejším objektívnym ukazovateľom je nedávna forma tímu. Výhodou modelu založeného na týchto dátach je to, že pracuje s reálnymi číslami popisujúcimi aktuálnu silu mužstva. Toto sa však stáva problémom v momente, keď hrá tím viacero súťaží (napríklad domácu ligu a medzinárodné poháre) a jeho výkony sa v nich rôznia \cite{dixon1997modelling}. Dobrým príkladom je slovenský klub Slovan Bratislava, ktorý síce v našej Fortuna Lige vyhráva zápas za zápasom, ale v Európskej lige sa mu proti ostatným tímom z kontinentu nedarí. Algoritmus by v prípade takýchto vstupných dát pasoval Slovan do roly favorita, a to aj napriek tomu, že hrá proti oveľa silnejšiemu zahraničnému tímu.
+
+\subsection{Góly strelené tímom}
+
+Väčšina algoritmov delí tímy podľa ich ofenzívnej schopnosti (t.j. toho, koľko gólov dokáže streliť) a podľa ich defenzívnej schopnosti (t.j. koľko gólov inkasuje) \cite{dixon1997modelling} \cite{razali2017predicting}. Do tejto objektívnej metriky môžu byť zaraďované aj strely či strely na bránu. Opäť sa tu ale naskytá problém - tím, ktorý inkasuje veľa gólov, môže veľa gólov aj streliť. Predstavte si situáciu, v ktorej tím vyhráva všetky zápasy 6-3. Dostane síce stále tri góly, ale strelí ích dvakrát toľko. Dobrou náhradou obrannej/útočnej sily je preto rozdiel gólov a ešte lepšou náhradou je rozdiel gólov podľa metriky xG, ktorý veľmi presne ukáže skutočnú silu porovnávaného tímu.
+
+Poznať počty gólov, ktoré tím strieľa a obdržiava je dôležité najmä k predikcii presného výsledku - iné ukazovatele nám môžu popísať, či tím vyhrá alebo prehrá, ale nikdy nepovedia, koľko gólov dá a dostane. Na základe dát z nedávnych stretnutí vieme predikovať počet gólov tímu aj bez algoritmu - keď napríklad mužstvo strelilo v desiatich zápasoch po sebe 4 a viac gólov, je veľká šanca, že sa mu bude dariť aj v jedenástom. Predpokladaný počet gólov, ktoré tím strelí, môže byť priemerom gólov, ktoré strelil v posledných x zápasoch proti súperovi silovo a typovo podobnému nastávajúcemu súperovi.
+
+\subsection{Relatívna sila mužstva}
+
+\subsection{Výhoda domáceho prostredia}
+
+Aj keď sa to na prvý pohľad zdá iba ako fáma, domáci tím má vo futbale skutočne signifikantnú výhodu. Podiel výhier domáceho k hosťovskému tímu je skoro v pomere 2:1 \cite{dixon1997modelling}. Desiatky tisíc fanúšikov povzbudzujúcich svoj obľúbený tím teda taktiež môžeme rátať ako dôležitý faktor. Pandémia COVID-19 sa stala unikátnou možnosťou na ukázanie toho, ako veľmi dokáže absencia divákov ovplyvniť výsledok futbalového zápasu \cite{2020}.
+
+\section{Test algoritmov na reálnych zápasoch}
 
 \section{Využitie v praxi - stávkovanie}
-
-Základným problémom je teda\ldots{} Najprv sa pozrieme na nejaké vysvetlenie (časť~\ref{ina:nejake}), a potom na ešte nejaké (časť~\ref{ina:nejake}).\footnote{Niekedy môžete potrebovať aj poznámku pod čiarou.}
-
-Môže sa zdať, že problém vlastne nejestvuje\cite{Coplien:MPD}, ale bolo dokázané, že to tak nie je~\cite{Czarnecki:Staged, Czarnecki:Progress}. Napriek tomu, aj dnes na webe narazíme na všelijaké pochybné názory\cite{PLP-Framework}. Dôležité veci možno \emph{zdôrazniť kurzívou}.
-
-
-\subsection{Nejaké vysvetlenie} \label{ina:nejake}
-
-Niekedy treba uviesť zoznam:
-
-\begin{itemize}
-\item jedna vec
-\item druhá vec
-	\begin{itemize}
-	\item x
-	\item y
-	\end{itemize}
-\end{itemize}
-
-Ten istý zoznam, len číslovaný:
-
-\begin{enumerate}
-\item jedna vec
-\item druhá vec
-	\begin{enumerate}
-	\item x
-	\item y
-	\end{enumerate}
-\end{enumerate}
-
-
-\subsection{Ešte nejaké vysvetlenie} \label{ina:este}
-
-\paragraph{Veľmi dôležitá poznámka.}
-Niekedy je potrebné nadpisom označiť odsek. Text pokračuje hneď za nadpisom.
-
-
-
-\section{Dôležitá časť} \label{dolezita}
-
-
-
-
-\section{Ešte dôležitejšia časť} \label{dolezitejsia}
-
-
-
 
 \section{Záver} \label{zaver} % prípadne iný variant názvu
 
 
-% týmto sa generuje zoznam literatúry z obsahu súboru literatura.bib podľa toho, na čo sa v článku odkazujete
-\bibliography{literatura}
+\bibliography{literatura.bib}
 \bibliographystyle{plain} % prípadne alpha, abbrv alebo hociktorý iný
 \end{document}
